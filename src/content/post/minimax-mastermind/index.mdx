@@ -1,0 +1,79 @@
+---
+title: "Mastermind in 5 guesses or less"
+description: "How to guess the code to the game Mastermind within 5 turns"
+publishDate: "30 Apr 2026"
+tags: []
+pinned: true
+---
+
+import MastermindNav from "./components/MastermindNav.svelte";
+import RulesDemo from "./components/RulesDemo.svelte";
+import CodeBreaker from "./components/CodeBreaker.svelte";
+import GoodGuess from "./components/GoodGuess.svelte";
+import CodeMaker from "./components/CodeMaker.svelte";
+import SearchSpace from "./components/SearchSpace.svelte";
+import Partitions from "./components/Partitions.svelte";
+import WorstCase from "./components/WorstCase.svelte";
+import MinimaxExplainer from "./components/MinimaxExplainer.svelte";
+
+<MastermindNav client:load />
+
+## The Game
+
+Mastermind is a code-breaking game from 1970. There exists a perfect strategy that
+solves it in at most 5 guesses. This page shows you how — by playing it first,
+then taking the algorithm apart.
+
+## The Rules
+
+One player sets a secret code — a row of <strong class="text-neutral-900 dark:text-white">4 pegs</strong>, each chosen from <strong class="text-neutral-900 dark:text-white">6 colors</strong>, with repetition allowed.
+
+That gives 6<sup>4</sup> = <strong class="text-neutral-900 dark:text-white">1,296</strong> possible codes.
+
+The guesser submits a code and gets feedback as colored pegs: a <strong class="text-neutral-900 dark:text-white">black peg</strong> for every position that is the right color <em>and</em> the right place; a <span class="text-neutral-600 dark:text-white/70 font-medium">white peg</span> for every peg that is the right color but in the wrong place. The counts are given but not which position matched.
+
+Try it — click any peg to change it and see the feedback update live.
+
+<RulesDemo client:visible />
+
+## Play: You're the Code Breaker
+
+The computer has chosen a secret code. You have 10 guesses to find it. Click a peg to select it, then pick a color from the palette that appears. Hit Submit when all four are filled.
+
+<CodeBreaker client:visible />
+
+## What Makes a Good Guess?
+
+You might have felt that some guesses were better than others. The key is how much information a guess gives you, regardless of what the response turns out to be.
+
+<GoodGuess client:visible />
+
+## Play: You're the Code Maker
+
+Now you set the secret. The AI will use an efficient strategy to crack it, one guess at a time. Watch the possible codes shrink with each step — it never needs more than 5.
+
+<CodeMaker client:visible />
+
+## The Search Space
+
+Before the first guess, every one of these 1,296 codes is a valid candidate. The algorithm's only job is to eliminate them as fast as possible.
+
+<SearchSpace client:visible />
+
+## A Guess Splits the Possibilities
+
+Each guess divides the remaining codes into groups — one group per possible response. More groups, and smaller ones, means the guess is more informative.
+
+<Partitions client:visible />
+
+## The Worst Case
+
+We don't control which response we get. So what matters is the biggest group — the number of codes we could still be left with even if we're unlucky. A good guess keeps that small.
+
+<WorstCase client:visible />
+
+## Minimax: Always Pick the Best Worst Case
+
+Minimax is the complete algorithm: at every turn, choose the guess whose largest remaining group is as small as possible. Applied consistently, this guarantees a solution in 5 guesses or fewer.
+
+<MinimaxExplainer client:visible />
