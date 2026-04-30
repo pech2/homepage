@@ -50,11 +50,11 @@
         disabled={revealed}
       >
         <span class="text-xs text-neutral-400 dark:text-white/40 uppercase tracking-widest">Option {label}</span>
-        <div class="flex gap-2">
+        <span class="inline-flex flex-row gap-2">
           {#each code as val}
             <Peg value={val} size="md" />
           {/each}
-        </div>
+        </span>
       </button>
     {/each}
   </div>
